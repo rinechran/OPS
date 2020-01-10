@@ -1,5 +1,7 @@
 #include "Game.h"
 #include "SDL/SDL_image.h"
+#include "Actor.h"
+
 
 
 Game::Game() {
@@ -7,6 +9,10 @@ Game::Game() {
 	mRenderer = nullptr;
 
 }
+void Game::AddActor(class Actor* actor) {
+	mActors.push_back(actor);
+}
+
 
 bool Game::Initialize() {
 	int initResult = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -84,7 +90,7 @@ void Game::Shutdown()
 void Game::Input()
 {
 	SDL_Event event;
-	while(SDL_PollEvent(&event)){
+	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 		case SDL_QUIT:
 			mIsRunning = false;

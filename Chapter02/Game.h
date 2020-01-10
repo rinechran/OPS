@@ -7,6 +7,7 @@
 
 #pragma once
 #include "SDL/SDL.h"
+#include <vector>
 #include <iostream>
 class Game
 {
@@ -15,6 +16,8 @@ public:
 	bool Initialize();
 	void Run();
 	void Shutdown();
+
+	void AddActor(class Actor* actor);
 private:
 	void Input();
 	void Update();
@@ -24,5 +27,8 @@ private:
 	SDL_Renderer* mRenderer;
 	std::uint32_t mTickCount;
 	bool mIsRunning;
+
+	//Actor
+	std::vector<class Actor*> mActors;
 
 };
