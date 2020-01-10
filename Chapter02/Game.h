@@ -7,7 +7,7 @@
 
 #pragma once
 #include "SDL/SDL.h"
-
+#include <iostream>
 class Game
 {
 public:
@@ -22,6 +22,7 @@ private:
 	void loadData();
 	SDL_Window* mWindows;
 	SDL_Renderer* mRenderer;
-
+	std::uint32_t mTickCount;
 	bool mIsRunning;
+
 };

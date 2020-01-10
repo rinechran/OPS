@@ -45,7 +45,7 @@ bool Game::Initialize() {
 
 	mIsRunning = true;
 	
-
+	mTickCount = SDL_GetTicks();
 	return true;
 }
 void Game::Run() {
@@ -55,11 +55,19 @@ void Game::Run() {
 		Update();
 		GenerateGraph();
 	}
+	const Uint8 * status = SDL_GetKeyboardState(nullptr);
+	if (status[SDL_SCANCODE_ESCAPE]) {
+		mIsRunning = false;
+	}
 
 }
 
 void Game::GenerateGraph() {
-	
+	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
+	SDL_RenderClear(mRenderer);
+
+
+	SDL_RenderPresent(mRenderer);
 
 }
 void Game::loadData() {
@@ -89,4 +97,14 @@ void Game::Input()
 
 void Game::Update()
 {
+	while ((mTickCount + 16 )- SDL_GetTicks() <=0 ) {}
+	float deltaTime = (SDL_GetTicks() - mTickCount)/1000.f;
+
+	if (deltaTime > 0.05f) {
+		deltaTime = 0.5;
+	}
+
+
+	mTickCount = SDL_GetTicks();
+
 }
