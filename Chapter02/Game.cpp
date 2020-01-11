@@ -3,7 +3,6 @@
 #include "Actor.h"
 
 
-
 Game::Game() {
 	mWindows = nullptr;
 	mRenderer = nullptr;

@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 class Actor
 {
 public:
@@ -14,9 +15,14 @@ public:
 		return mState;
 	}
 
+	void AddComponent(class Component* component);
+	void RemoveComponent(class Component* component);
 	eState mState;
 
 private:
+	void UpdateComponents(float deltaTime);
 	class Game* mGame;
+	std::vector<class Component*> mComponents;
+	
 };
 
