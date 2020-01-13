@@ -3,6 +3,7 @@
 #include "Actor.h"
 #include "Ship.h"
 #include "SpriteComponent.h"
+#include "BGSpriteComponent.h"
 
 
 Game::Game() {
@@ -129,6 +130,19 @@ void Game::loadData() {
 	mShip = new Ship(this);
 	mShip->SetPosition(Vector2(100.f, 350.0f));
 	mShip->SetScale(1.0f);
+
+	Actor* temp = new Actor(this);
+	temp->SetPosition(Vector2(512.0f, 384.0f));
+	BGSpriteComponent* bg = new BGSpriteComponent(temp);
+
+
+	bg->SetScreenSize(Vector2(1024.0f, 768.0f));
+	std::vector<SDL_Texture*> bgtexs = {
+		GetTexture("Assets/Farback01.png"),
+		GetTexture("Assets/Farback02.png")
+	};
+	bg->SetBGTextures(bgtexs);
+	bg->SetScrollSpeed(-100.0f);
 
 }
 void Game::Shutdown()
