@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "SDL/SDL_image.h"
 #include "Actor.h"
+#include "Ship.h"
 
 
 Game::Game() {
@@ -8,8 +9,8 @@ Game::Game() {
 	mRenderer = nullptr;
 
 }
-void Game::AddActor(class Actor* actor) {
-	mActors.push_back(actor);
+void Game::AddActor(Actor* actor) {
+	mActors.emplace_back(actor);
 }
 
 
@@ -76,6 +77,8 @@ void Game::GenerateGraph() {
 
 }
 void Game::loadData() {
+	
+	mShip = new Ship(this);
 
 }
 void Game::Shutdown()
@@ -111,5 +114,25 @@ void Game::Update()
 
 
 	mTickCount = SDL_GetTicks();
+
+	// Update all acotr
+	mUpdatingActors = true;
+	for (auto actor : mActors) {
+		actor->Update(deltaTime);
+	}
+	mUpdatingActors = false;
+
+	for (auto pending : mPendingActors) {
+		mActors.emplace_back(pending);
+	}
+	mPendingActors.clear();
+
+	std::vector<Actor*> deadActors;
+
+	for (auto actor : mActors) {
+
+	}
+
+
 
 }

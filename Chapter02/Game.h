@@ -7,8 +7,10 @@
 
 #pragma once
 #include "SDL/SDL.h"
+#include "Ship.h"
 #include <vector>
 #include <iostream>
+#include <unordered_map>
 class Game
 {
 public:
@@ -26,9 +28,19 @@ private:
 	SDL_Window* mWindows;
 	SDL_Renderer* mRenderer;
 	std::uint32_t mTickCount;
+
 	bool mIsRunning;
 
-	//Actor
+	bool mUpdatingActors;
+
+	// Actor
 	std::vector<class Actor*> mActors;
+	// Pending actor
+	std::vector<class Actor*> mPendingActors;
+
+
+	std::unordered_map<std::string, SDL_Texture*> mTextures;
+
+	class Ship* mShip;
 
 };
