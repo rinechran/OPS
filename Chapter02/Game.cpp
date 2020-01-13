@@ -132,7 +132,7 @@ void Game::loadData() {
 	mShip->SetScale(1.0f);
 
 	Actor* temp = new Actor(this);
-	temp->SetPosition(Vector2(512.0f, 384.0f));
+	temp->SetPosition(Vector2(0,0));
 	BGSpriteComponent* bg = new BGSpriteComponent(temp);
 
 

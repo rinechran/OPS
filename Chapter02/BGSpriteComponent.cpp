@@ -26,23 +26,24 @@ void BGSpriteComponent::Update(float deltaTime)
 		// the right of the last bg texture
 		if (bg.mOffset.x < -mScreenSize.x)
 		{
+			
 			bg.mOffset.x = (mBGTextures.size() - 1) * mScreenSize.x - 1;
+			bg.mOffset.x = bg.mOffset.x;
 		}
 	}
 }
 
 void BGSpriteComponent::Draw(SDL_Renderer* renderer)
 {
-	// Draw each background texture
 	for (auto& bg : mBGTextures)
 	{
 		SDL_Rect r;
-		// Assume screen size dimensions
 		r.w = static_cast<int>(mScreenSize.x);
 		r.h = static_cast<int>(mScreenSize.y);
-		// Center the rectangle around the position of the owner
-		r.x = static_cast<int>(mOwner->GetPosition().x - r.w / 2 + bg.mOffset.x);
-		r.y = static_cast<int>(mOwner->GetPosition().y - r.h / 2 + bg.mOffset.y);
+
+
+		r.x = static_cast<int>(bg.mOffset.x);
+		r.y = static_cast<int>(bg.mOffset.y);
 
 		// Draw this background
 		SDL_RenderCopy(renderer,
