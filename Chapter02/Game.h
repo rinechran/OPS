@@ -20,6 +20,9 @@ public:
 	void Shutdown();
 
 	void AddActor(class Actor* actor);
+	SDL_Texture* GetTexture(const std::string& fileName);
+	void AddSprite(class SpriteComponent* sprite);
+	void RemoveSprite(class SpriteComponent* sprite);
 private:
 	void Input();
 	void Update();
@@ -38,6 +41,9 @@ private:
 	// Pending actor
 	std::vector<class Actor*> mPendingActors;
 
+	std::vector<class SpriteComponent*> mSprites;
+
+	std::vector<class Actor*> mDeadActors;
 
 	std::unordered_map<std::string, SDL_Texture*> mTextures;
 

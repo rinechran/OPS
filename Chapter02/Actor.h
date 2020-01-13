@@ -13,18 +13,22 @@ public:
 	~Actor();
 
 	eState GetState() const;
-
-	void AddComponent(class Component* component);
+	
 	void Update(float deltaTime);
+	
+	virtual void UpdateActor(float deltaTime);
 
 	void RemoveComponent(class Component* component);
-	
+	void AddComponent(class Component* component);
+
 	void SetPosition(const Vector2 pos);
 	Vector2 GetPosition();
 
 	float GetScale();
 	void SetScale(float scale);
+	float GetRotation() const { return mRotation; }
 
+	class Game* GetGame() { return mGame; }
 
 	eState mState;
 

@@ -2,6 +2,7 @@
 #include "SDL/SDL_image.h"
 #include "Actor.h"
 #include "Ship.h"
+#include "SpriteComponent.h"
 
 
 Game::Game() {
@@ -11,6 +12,54 @@ Game::Game() {
 }
 void Game::AddActor(Actor* actor) {
 	mActors.emplace_back(actor);
+}
+SDL_Texture* Game::GetTexture(const std::string& fileName) {
+	SDL_Texture* tex = nullptr;
+
+	auto iter = mTextures.find(fileName);
+
+	if (iter != mTextures.end()) {
+		tex = iter->second;
+	}
+	else {
+		SDL_Surface* surf = IMG_Load(fileName.c_str());
+		if (!surf) {
+			SDL_Log("Failed to load texture file %s", SDL_GetError());
+			return nullptr;
+		}
+
+		tex = SDL_CreateTextureFromSurface(mRenderer, surf);
+		SDL_FreeSurface(surf);
+		if (!tex) {
+			SDL_Log("Failed to convert surface to texture for %s", SDL_GetError());
+			return nullptr;
+		}
+		mTextures.emplace(fileName.c_str(), tex);
+	}
+
+	return tex;
+
+}
+
+void Game::AddSprite(SpriteComponent* sprite)
+{
+	int myDrawOrder = sprite->GetDrawOrder();
+	auto iter = mSprites.begin();
+	for (;
+		iter != mSprites.end();
+		++iter) {
+		
+		if (myDrawOrder < (*iter)->GetDrawOrder()) {
+			break;
+		}
+
+	}
+
+	mSprites.insert(iter, sprite);
+}
+
+void Game::RemoveSprite(SpriteComponent* sprite)
+{
 }
 
 
@@ -61,10 +110,7 @@ void Game::Run() {
 		Update();
 		GenerateGraph();
 	}
-	const Uint8 * status = SDL_GetKeyboardState(nullptr);
-	if (status[SDL_SCANCODE_ESCAPE]) {
-		mIsRunning = false;
-	}
+
 
 }
 
@@ -72,13 +118,17 @@ void Game::GenerateGraph() {
 	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(mRenderer);
 
-
+	for (auto sprite : mSprites) {
+		sprite->Draw(mRenderer);
+	}
 	SDL_RenderPresent(mRenderer);
 
 }
 void Game::loadData() {
 	
 	mShip = new Ship(this);
+	mShip->SetPosition(Vector2(100.f, 350.0f));
+	mShip->SetScale(1.0f);
 
 }
 void Game::Shutdown()
@@ -101,6 +151,12 @@ void Game::Input()
 			break;
 		}
 	}
+	const Uint8* status = SDL_GetKeyboardState(nullptr);
+	if (status[SDL_SCANCODE_ESCAPE]) {
+		mIsRunning = false;
+	}
+	mShip->ProcessKeyBoard(status);
+
 }
 
 void Game::Update()
@@ -127,12 +183,16 @@ void Game::Update()
 	}
 	mPendingActors.clear();
 
-	std::vector<Actor*> deadActors;
 
 	for (auto actor : mActors) {
-
+		if (actor->GetState() == Actor::eState::Dead) {
+			mDeadActors.emplace_back(actor);
+		}
 	}
-
+	for (auto actor : mDeadActors) {
+		delete actor;
+	}
+	mDeadActors.clear();
 
 
 }

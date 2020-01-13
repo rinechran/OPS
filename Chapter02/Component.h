@@ -6,6 +6,8 @@ public:
 	virtual ~Component();
 	virtual void Update(float deltaTime);
 
+	int GetUpdateOrder() const;
+
 protected:
 	class Actor* mOwner;
 	int mUpdateOrder;
