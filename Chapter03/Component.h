@@ -4,14 +4,14 @@ class Actor;
 class Component
 {
 public:
-	Component(Actor* owner, int updateOrder);
+	Component(Actor* owner, int updateOrder = 100);
 	virtual ~Component();
 	int GetUpdateOrder();
 
 	virtual void Update(float deltaTime);
 	virtual void ProcessInput(const std::uint8_t* keyState) {}
 
-private:
+protected:
 
 	Actor* mOwner;
 

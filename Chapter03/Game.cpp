@@ -71,7 +71,6 @@ void Game::GenerateOutput()
 	SDL_RenderClear(mRenderer);
 
 
-
 	SDL_RenderPresent(mRenderer);
 }
 
