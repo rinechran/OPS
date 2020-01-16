@@ -1,5 +1,7 @@
 #include "Game.h"
-
+#include "Actor.h"
+#include "SDL/SDL_image.h"
+#include "Random.h"
 Game::Game()
 	: mWindow(nullptr)
 	, mRenderer(nullptr)
@@ -29,6 +31,14 @@ bool Game::Initialize()
 		SDL_Log("Failed to create render : %s", SDL_GetError());
 		return false;
 	}
+	if (IMG_Init(IMG_INIT_PNG) == 0) {
+		SDL_Log("Failed to initalize IMG : %s", SDL_GetError());
+		return false;
+	}
+
+	Random::Init();
+
+
 	LoadData();
 
 
@@ -39,12 +49,55 @@ bool Game::Initialize()
 
 void Game::Shutdown()
 {
+	IMG_Quit();
+	SDL_DestroyRenderer(mRenderer);
+	SDL_DestroyWindow(mWindow);
+	SDL_Quit();
 }
 
 void Game::Run()
 {
 	while (mIsRunning) {
+		ProcessInput();
 		Update();
+		GenerateOutput();
+	}
+}
+
+void Game::GenerateOutput()
+{
+	SDL_SetRenderDrawColor(mRenderer, 220, 220, 220, 255);
+
+	SDL_RenderClear(mRenderer);
+
+
+
+	SDL_RenderPresent(mRenderer);
+}
+
+void Game::AddActor(Actor* actor) {
+	if (mUpdateActors) {
+		mPendingActors.emplace_back(actor);
+	}
+	else {
+		mActors.emplace_back(actor);
+	}
+}
+
+void Game::RemoveActor(Actor* actor)
+{
+	auto iter = std::find(mPendingActors.begin(), mPendingActors.end(), actor);
+	if (iter != mPendingActors.end())
+	{
+		std::iter_swap(iter, mPendingActors.end() - 1);
+		mPendingActors.pop_back();
+	}
+
+	iter = std::find(mActors.begin(), mActors.end(), actor);
+	if (iter != mActors.end())
+	{
+		std::iter_swap(iter, mActors.end() - 1);
+		mActors.pop_back();
 	}
 }
 
@@ -60,6 +113,32 @@ void Game::Update()
 	}
 
 	mTicksCount = SDL_GetTicks();
+
+	mUpdateActors = true;
+	for (auto actor : mActors) {
+		actor->Update(deltaTime);
+	}
+	mUpdateActors = false;
+
+	for (auto mPendActor : mPendingActors) {
+		mActors.emplace_back(mPendActor);
+	}
+	mPendingActors.clear();
+
+	std::vector<Actor*> deadActor;
+
+	for (auto actor : mActors) {
+		if (actor->GetState() == Actor::eState::Dead) {
+			deadActor.emplace_back(actor);
+		}
+	}
+
+	for (auto deadActor : deadActor) {
+		delete deadActor;
+	}
+
+
+
 }
 
 void Game::ProcessInput()
@@ -79,8 +158,10 @@ void Game::ProcessInput()
 	const std::uint8_t * keyState = SDL_GetKeyboardState(nullptr);
 
 	mUpdateActors = true;
-	/*
-	*/
+	for (auto actor : mActors) {
+		actor->ProcessInput(keyState);
+	}
+
 	mUpdateActors = false;
 
 }
