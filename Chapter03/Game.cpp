@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Actor.h"
 #include "SDL/SDL_image.h"
+#include "SpriteComponent.h"
 #include "Random.h"
 Game::Game()
 	: mWindow(nullptr)
@@ -70,6 +71,9 @@ void Game::GenerateOutput()
 
 	SDL_RenderClear(mRenderer);
 
+	for (auto sprite : mSprites) {
+		sprite->Draw(mRenderer);
+	}
 
 	SDL_RenderPresent(mRenderer);
 }
@@ -98,6 +102,30 @@ void Game::RemoveActor(Actor* actor)
 		std::iter_swap(iter, mActors.end() - 1);
 		mActors.pop_back();
 	}
+}
+
+void Game::AddSprite(SpriteComponent* sprite) {
+	auto myDrawOrder = sprite->GetUpdateOrder();
+
+	auto iter = mSprites.begin();
+	for (;
+		iter != mSprites.end();
+		++iter)
+	{
+		if (myDrawOrder < (*iter)->GetDrawOrder())
+		{
+			break;
+		}
+	}
+
+	// Inserts element before position of iterator
+	mSprites.insert(iter, sprite);
+}
+
+void Game::RemoveSprite(SpriteComponent* sprite) {
+
+	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
+	mSprites.erase(iter);
 }
 
 void Game::Update()
@@ -135,7 +163,6 @@ void Game::Update()
 	for (auto deadActor : deadActor) {
 		delete deadActor;
 	}
-
 
 
 }

@@ -7,6 +7,7 @@
 
 class Ship;
 class Actor;
+class SpriteComponent;
 
 class Game
 {
@@ -23,6 +24,8 @@ public:
 	void AddActor(Actor* actor);
 	void RemoveActor(Actor* actor);
 
+	void AddSprite(SpriteComponent * sprite);
+	void RemoveSprite(SpriteComponent* sprite);
 
 	// Variables
 
@@ -44,6 +47,8 @@ private:
 
 	std::vector<Actor*> mActors;
 	std::vector<Actor*> mPendingActors;
+	
+	std::vector<SpriteComponent*> mSprites;
 	std::unordered_map<std::string, SDL_Texture*> mTextures;
 
 	Ship* mShip;
