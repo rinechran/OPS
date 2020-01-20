@@ -2,6 +2,7 @@
 #include "SpriteComponent.h"
 #include "Game.h"
 #include "InputComponent.h"
+#include "Laser.h"
 
 Ship::Ship(Game* game)
 	: Actor(game)
@@ -9,6 +10,10 @@ Ship::Ship(Game* game)
 {
 	SpriteComponent* sc = new SpriteComponent(this, 150);
 	sc->SetTexture(game->GetTexture("Assets/Ship.png"));
+
+	InputComponent* ic = new InputComponent(this);
+	ic->SetForwardKey(SDL_SCANCODE_W);
+	
 
 
 }
