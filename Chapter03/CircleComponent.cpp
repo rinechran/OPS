@@ -13,7 +13,7 @@ void CircleComponent::SetRadius(float redius)
 
 float CircleComponent::GetRadius() const 
 {
-	return mRadius;
+	return mOwner->GetScale() * mRadius;
 }
 
 const Vector2& CircleComponent::GetCenter() const

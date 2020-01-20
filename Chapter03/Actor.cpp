@@ -60,7 +60,7 @@ void Actor::UpdateActor(float deltaTime)
 {
 }
 
-const Vector2 Actor::GetPosition() const {
+const Vector2& Actor::GetPosition() const {
 	return mPosition;
 }
 

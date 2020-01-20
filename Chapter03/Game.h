@@ -8,7 +8,7 @@
 class Ship;
 class Actor;
 class SpriteComponent;
-
+class Asteroid;
 class Game
 {
 public:
@@ -27,7 +27,10 @@ public:
 	void AddSprite(SpriteComponent * sprite);
 	void RemoveSprite(SpriteComponent* sprite);
 
+	void AddAsteroid(Asteroid* ast);
+	void RemoveAsteroid(Asteroid* ast);
 	SDL_Texture* GetTexture(const std::string& fileName);
+	std::vector<Asteroid*>& GetAsteroids();
 
 private:
 
@@ -50,6 +53,7 @@ private:
 	
 	std::vector<SpriteComponent*> mSprites;
 	std::unordered_map<std::string, SDL_Texture*> mTextures;
+	std::vector<Asteroid*> mAsteroids;
 
 	Ship* mShip;
 };

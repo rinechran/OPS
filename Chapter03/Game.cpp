@@ -4,6 +4,8 @@
 #include "SpriteComponent.h"
 #include "Random.h"
 #include "Ship.h"
+#include "Asteroid.h"
+
 Game::Game()
 	: mWindow(nullptr)
 	, mRenderer(nullptr)
@@ -126,6 +128,19 @@ void Game::RemoveSprite(SpriteComponent* sprite) {
 	mSprites.erase(iter);
 }
 
+void Game::AddAsteroid(Asteroid* ast) {
+	mAsteroids.push_back(ast);
+}
+
+void Game::RemoveAsteroid(Asteroid* ast) {
+	auto iter = std::find(mAsteroids.begin(),
+		mAsteroids.end(), ast);
+	if (iter != mAsteroids.end())
+	{
+		mAsteroids.erase(iter);
+	}
+}
+
 SDL_Texture* Game::GetTexture(const std::string& fileName) {
 	SDL_Texture* tex = nullptr;
 
@@ -151,12 +166,14 @@ SDL_Texture* Game::GetTexture(const std::string& fileName) {
 	return tex;
 }
 
+std::vector<Asteroid*>& Game::GetAsteroids() { return mAsteroids; }
+
 void Game::Update()
 {
 	while ((mTicksCount + 16) - SDL_GetTicks() < 0) {
 		;
 	}
-	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000;
+	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
 
 	if (deltaTime > 0.5f) {
 		deltaTime = 0.5;
@@ -221,5 +238,9 @@ void Game::LoadData()
 	mShip->SetPosition(Vector2(512.f, 384.f));
 	mShip->SetRotation(Math::PiOver2);
 
-	
+	const int numAsteroids = 20;
+	for (int i = 0; i < numAsteroids; i++)
+	{
+		new Asteroid(this);
+	}
 }

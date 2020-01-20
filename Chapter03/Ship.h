@@ -10,7 +10,7 @@ public:
 	void ActorInput(const uint8_t* keyState) override;
 
 private:
-	float mLaserCoolDown;
+	float mLaserCooldown;
 
 };
 

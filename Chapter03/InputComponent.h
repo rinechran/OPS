@@ -11,7 +11,8 @@ public:
 	void ProcessInput(const std::uint8_t* keyState) override;
 	float GetMaxForward() const { return mMaxForwardSpeed; }
 	float GetMaxAngular() const { return mMaxAngularSpeed; }
-
+	void SetMaxForwardSpeed(float speed) { mMaxForwardSpeed = speed; }
+	void SetMaxAngularSpeed(float speed) { mMaxAngularSpeed = speed; }
 	void SetForwardKey(int key);
 	void SetBackKey(int key);
 	void SetClockwiseKey(int key);
