@@ -27,7 +27,7 @@ public:
 	void AddSprite(SpriteComponent * sprite);
 	void RemoveSprite(SpriteComponent* sprite);
 
-	// Variables
+	SDL_Texture* GetTexture(const std::string& fileName);
 
 private:
 

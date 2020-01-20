@@ -3,12 +3,14 @@
 #include "SDL/SDL_image.h"
 #include "SpriteComponent.h"
 #include "Random.h"
+#include "Ship.h"
 Game::Game()
 	: mWindow(nullptr)
 	, mRenderer(nullptr)
 	, mIsRunning(true)
 	, mTicksCount(0)
 	, mUpdateActors(false)
+	, mShip(nullptr)
 {
 }
 
@@ -39,12 +41,10 @@ bool Game::Initialize()
 
 	Random::Init();
 
-
 	LoadData();
 
-
 	mTicksCount = SDL_GetTicks();
-	
+
 	return true;
 }
 
@@ -74,7 +74,6 @@ void Game::GenerateOutput()
 	for (auto sprite : mSprites) {
 		sprite->Draw(mRenderer);
 	}
-
 	SDL_RenderPresent(mRenderer);
 }
 
@@ -118,7 +117,6 @@ void Game::AddSprite(SpriteComponent* sprite) {
 		}
 	}
 
-	// Inserts element before position of iterator
 	mSprites.insert(iter, sprite);
 }
 
@@ -128,9 +126,34 @@ void Game::RemoveSprite(SpriteComponent* sprite) {
 	mSprites.erase(iter);
 }
 
+SDL_Texture* Game::GetTexture(const std::string& fileName) {
+	SDL_Texture* tex = nullptr;
+
+	auto iter = mTextures.find(fileName);
+	if (iter != mTextures.end()) {
+		tex = iter->second;
+	}
+	else {
+		SDL_Surface* surf = IMG_Load(fileName.c_str());
+		if (!surf) {
+			SDL_Log("Failded to load texture file %s", fileName.c_str());
+			return nullptr;
+		}
+		tex = SDL_CreateTextureFromSurface(mRenderer, surf);
+		SDL_FreeSurface(surf);
+		if (!tex) {
+			SDL_Log("failed to convert surface to texture for %s", fileName.c_str());
+			return nullptr;
+		}
+		mTextures.emplace(fileName.c_str(), tex);
+	}
+
+	return tex;
+}
+
 void Game::Update()
 {
-	while ((mTicksCount + 16) - SDL_GetTicks() > 0) {
+	while ((mTicksCount + 16) - SDL_GetTicks() < 0) {
 		;
 	}
 	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000;
@@ -194,4 +217,9 @@ void Game::ProcessInput()
 
 void Game::LoadData()
 {
+	mShip = new Ship(this);
+	mShip->SetPosition(Vector2(512.f, 384.f));
+	mShip->SetRotation(Math::PiOver2);
+
+	
 }
