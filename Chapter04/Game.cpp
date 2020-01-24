@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Actor.h"
 #include "SDL/SDL_image.h"
 
 Game::Game()
@@ -34,7 +35,6 @@ bool Game::Initalize() {
 	}
 
 	mTicksCount = SDL_GetTicks();
-
 	return true;
 
 }
@@ -51,7 +51,82 @@ void Game::Shutdown() {
 
 }
 
+void Game::AddActor(Actor * actor) {
+	if (mUpdateActor) {
+		mPendingActors.emplace_back(actor);
+	}
+	else {
+		mActors.emplace_back(actor);
+	}
+}
+
+void Game::RemoveActor(Actor* actor)
+{
+	auto iter = std::find(mPendingActors.begin(), mPendingActors.end(), actor);
+	if (iter != mPendingActors.end()) {
+		std::iter_swap(iter, mPendingActors.end() - 1);
+		mPendingActors.pop_back();
+	}
+	iter = std::find(mActors.begin(), mActors.end(), actor);
+	if (iter != mActors.end())
+	{
+		std::iter_swap(iter, mActors.end() - 1);
+		mActors.pop_back();
+	}
+}
+
+void Game::AddSprite(SpriteComponent* sprite)
+{
+}
+
+void Game::RemoveSprite(SpriteComponent* sprite)
+{
+}
+
+SDL_Texture* Game::GetTexture(const std::string& fileName)
+{
+	SDL_Texture* tex = nullptr;
+	auto iter = mTextures.find(fileName);
+	if (iter != mTextures.end()) {
+		tex = iter->second;
+	}
+	else {
+		SDL_Surface* surf = IMG_Load(fileName.c_str());
+		if (!surf) {
+			SDL_Log("Faild to load texture file %s", fileName.c_str());
+			return nullptr;
+		}
+		tex = SDL_CreateTextureFromSurface(mRenderer, surf);
+		SDL_FreeSurface(surf);
+		if (!tex) {
+			SDL_Log("Failed to convert surface to texture for  %s", fileName.c_str());
+			return nullptr;
+		}
+		mTextures.emplace(fileName.c_str(), tex);
+
+	}
+	return tex;
+}
+
 void Game::ProcessInput() {
+
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			mIsRunning = false;
+			break;
+		default:
+			break;
+		}
+	}
+	const std::uint8_t* keyState = SDL_GetKeyboardState(NULL);
+	if (keyState[SDL_SCANCODE_ESCAPE])
+	{
+		mIsRunning = false;
+	}
+
 
 }
 

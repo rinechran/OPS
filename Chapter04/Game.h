@@ -1,10 +1,12 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 #include "SDL/SDL.h"
 
 
 class Actor;
+class SpriteComponent;
 class Game
 {
 public:
@@ -13,19 +15,34 @@ public:
 	void RunLoop();
 	void Shutdown();
 
+
+	void AddActor(Actor* actor);
+	void RemoveActor(Actor* actor);
+
+	void AddSprite(SpriteComponent* sprite);
+	void RemoveSprite(SpriteComponent* sprite);
+
+	SDL_Texture* GetTexture(const std::string& fileName);
+
+
 private:
 	void ProcessInput();
 	void UpdateGame();
 	void GenerateOutput();
 
-	
+
 	bool mIsRunning;
-	std::uint32_t mTicksCount;
+	Uint32 mTicksCount;
 	SDL_Window* mWindow;
 	SDL_Renderer* mRenderer;
 
 
+	std::unordered_map<std::string, SDL_Texture*> mTextures;
+
+	bool mUpdateActor;
 	std::vector<Actor*> mActors;
+	std::vector<Actor*> mPendingActors;
+	std::vector<SpriteComponent*> mSprites;
 
 };
 
