@@ -7,6 +7,7 @@
 
 class Actor;
 class SpriteComponent;
+class Grid;
 class Game
 {
 public:
@@ -30,6 +31,9 @@ private:
 	void UpdateGame();
 	void GenerateOutput();
 
+	void LoadData();
+	void UnLoadData();
+
 
 	bool mIsRunning;
 	Uint32 mTicksCount;
@@ -43,6 +47,8 @@ private:
 	std::vector<Actor*> mActors;
 	std::vector<Actor*> mPendingActors;
 	std::vector<SpriteComponent*> mSprites;
+
+	Grid* mGrid;
 
 };
 

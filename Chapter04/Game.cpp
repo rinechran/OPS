@@ -1,12 +1,15 @@
 #include "Game.h"
 #include "Actor.h"
 #include "SDL/SDL_image.h"
+#include "Grid.h"
+#include "SpriteComponent.h"
 
 Game::Game()
 	: mIsRunning(true)
 	, mWindow(nullptr)
 	, mRenderer(nullptr)
-	, mTicksCount(0) {
+	, mTicksCount(0)
+	, mGrid(nullptr){
 
 }
 
@@ -34,6 +37,7 @@ bool Game::Initalize() {
 		return false;
 	}
 
+	LoadData();
 	mTicksCount = SDL_GetTicks();
 	return true;
 
@@ -49,6 +53,11 @@ void Game::RunLoop() {
 
 void Game::Shutdown() {
 
+	UnLoadData();
+	IMG_Quit();
+	SDL_DestroyRenderer(mRenderer);
+	SDL_DestroyWindow(mWindow);
+	SDL_Quit();
 }
 
 void Game::AddActor(Actor * actor) {
@@ -147,5 +156,31 @@ void Game::UpdateGame() {
 }
 
 void Game::GenerateOutput() {
+	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
+	SDL_RenderClear(mRenderer);
+
+	for (auto sprite : mSprites) {
+		sprite->Draw(mRenderer);
+	}
+
+	SDL_RenderPresent(mRenderer);
+
+}
+
+void Game::LoadData()
+{
+	mGrid = new Grid(this);
+}
+
+void Game::UnLoadData()
+{
+	while (!mActors.empty()) {
+		delete mActors.back();
+	}
+	for (auto i : mTextures)
+	{
+		SDL_DestroyTexture(i.second);
+	}
+	mTextures.clear();
 
 }
