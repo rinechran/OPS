@@ -6,7 +6,7 @@ Actor::Actor(Game* game)
 	: mGame(game)
 	, mPosition(Vector2::Zero)
 	, mScale(1.0f)
-	, mRouation(0.0f)
+	, mRotation(0.0f)
 	, mState(Actor::eState::Active)
 {
 	mGame->AddActor(this);
@@ -93,3 +93,17 @@ Game* Actor::GetGame()
 Actor::eState Actor::GetState() const { return mState; }
 
 void Actor::SetState(eState state) { mState = state; }
+
+float Actor::GetScale() const { return mScale; }
+
+void Actor::SetScale(float scale) {
+	mScale = scale;
+}
+
+float Actor::GetRotation() const { return mRotation; }
+
+void Actor::SetRotation(float rotation) { mRotation = rotation; }
+
+Vector2 Actor::GetForward() const {
+	return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation));
+}

@@ -34,13 +34,19 @@ public:
 	eState GetState() const;
 	void SetState(eState state);
 
+	float GetScale() const;
+	void SetScale(float scale);
 
+	float GetRotation() const;
+	void SetRotation(float rotation);
+
+	Vector2 GetForward() const;
 
 private:
 
 	Vector2 mPosition;
 	float mScale;
-	float mRouation;
+	float mRotation;
 	eState mState;
 	std::vector <Component*> mComponents;
 	Game* mGame;
