@@ -7,7 +7,7 @@ class Actor;
 class SpriteComponent : public Component
 {
 public:
-	SpriteComponent(Actor* owner, int drawOrder);
+	SpriteComponent(Actor* owner, int drawOrder = 100);
 	virtual ~SpriteComponent();
 	
 	virtual void Draw(SDL_Renderer* renderer);
@@ -18,6 +18,7 @@ public:
 	int GetTexWidth() const { return mTextWidth; }
 
 protected:
+
 	SDL_Texture* mTexture;
 	int mDrawOrder;
 	int mTextWidth;
