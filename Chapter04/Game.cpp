@@ -9,7 +9,7 @@ Game::Game()
 	, mWindow(nullptr)
 	, mRenderer(nullptr)
 	, mTicksCount(0)
-	, mGrid(nullptr){
+	, mGrid(nullptr) {
 
 }
 
@@ -60,7 +60,7 @@ void Game::Shutdown() {
 	SDL_Quit();
 }
 
-void Game::AddActor(Actor * actor) {
+void Game::AddActor(Actor* actor) {
 	if (mUpdateActor) {
 		mPendingActors.emplace_back(actor);
 	}
@@ -150,6 +150,23 @@ void Game::ProcessInput() {
 	{
 		mIsRunning = false;
 	}
+	if (keyState[SDL_SCANCODE_B]) {
+		mGrid->BuildTower();
+	}
+
+	int x, y;
+	Uint32 buttons = SDL_GetMouseState(&x, &y);
+	if (SDL_BUTTON(buttons) & SDL_BUTTON_LEFT) {
+		mGrid->ProcessClick(x, y);
+	}
+
+
+	mUpdateActor = true;
+	for (auto actor : mActors)
+	{
+		actor->ProcessInput(keyState);
+	}
+	mUpdateActor = false;
 
 
 }
@@ -159,7 +176,7 @@ void Game::UpdateGame() {
 	}
 
 	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
-	
+
 	if (deltaTime > 0.05f)
 	{
 		deltaTime = 0.05f;

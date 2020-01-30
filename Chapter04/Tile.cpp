@@ -14,16 +14,20 @@ Tile::Tile(Game* game)
 
 }
 
+inline Tile::eTileState Tile::GetTileState() {
+	return mTileState;
+}
+
 void Tile::SetTileState(eTileState state)
 {
-	mTitleState = state;
+	mTileState = state;
 	UpdateTexture();
 }
 
 void Tile::UpdateTexture()
 {
 	std::string text;
-	switch (mTitleState)
+	switch (mTileState)
 	{
 	case Tile::eTileState::Start:
 		text = "Assets/TileTan.png";

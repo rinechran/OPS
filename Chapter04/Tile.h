@@ -16,7 +16,7 @@ public:
 	};
 
 	Tile(Game* game);
-
+	Tile::eTileState GetTileState();
 	void SetTileState(eTileState state);
 	void UpdateTexture();
 private:
@@ -24,7 +24,11 @@ private:
 	float g;
 	float h;
 
-	eTileState mTitleState;
+
+	std::vector<Tile*> mAdjacent;
+
+
+	eTileState mTileState;
 	SpriteComponent* mSprite;
 
 	bool mSelected;
