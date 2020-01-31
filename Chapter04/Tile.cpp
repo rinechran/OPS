@@ -1,12 +1,13 @@
 #include "Tile.h"
 #include "SpriteComponent.h"
 #include "Game.h"
-Tile::Tile(Game* game) 
+Tile::Tile(Game* game)
 	: Actor(game)
 	, f(0.0f)
 	, g(0.0f)
 	, h(0.0f)
 	, mSprite(nullptr)
+	, mSelected(false)
 {
 
 	mSprite = new SpriteComponent(this);
@@ -14,7 +15,7 @@ Tile::Tile(Game* game)
 
 }
 
-inline Tile::eTileState Tile::GetTileState() {
+Tile::eTileState Tile::GetTileState() {
 	return mTileState;
 }
 
@@ -52,4 +53,11 @@ void Tile::UpdateTexture()
 	}
 	mSprite->SetTexture(GetGame()->GetTexture(text));
 	
+}
+
+void Tile::ToggleSelect()
+{
+	mSelected = !mSelected;
+	UpdateTexture();
+
 }

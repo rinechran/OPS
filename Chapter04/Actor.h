@@ -8,15 +8,15 @@ class Actor {
 public:
 	enum class eState {
 		Active,
-		EPaused,
-		EDead
+		Paused,
+		Dead,
 	};
 	Actor(Game* game);
 	virtual ~Actor();
 
 	void Update(float deltaTime);
 
-	virtual void updateActor(float deltaTime);
+	virtual void UpdateActor(float deltaTime);
 	void UpdateComponents(float deltaTime);
 
 	void ProcessInput(const std::uint8_t * keyState);

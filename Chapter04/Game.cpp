@@ -132,6 +132,8 @@ SDL_Texture* Game::GetTexture(const std::string& fileName)
 	return tex;
 }
 
+std::vector<Enemy*>& Game::GetEnemies() { return mEnemies; }
+
 void Game::ProcessInput() {
 
 	SDL_Event event;
@@ -150,7 +152,7 @@ void Game::ProcessInput() {
 	{
 		mIsRunning = false;
 	}
-	if (keyState[SDL_SCANCODE_B]) {
+	if (keyState[SDL_SCANCODE_A]) {
 		mGrid->BuildTower();
 	}
 
@@ -183,7 +185,27 @@ void Game::UpdateGame() {
 	}
 	mTicksCount = SDL_GetTicks();
 
+	mUpdateActor = true;
+	for (auto actor : mActors) {
+		actor->Update(deltaTime);
+	}
+	mUpdateActor = false;
 
+	for (auto pending : mPendingActors) {
+		mActors.emplace_back(pending);
+	}
+	mPendingActors.clear();
+
+	std::vector<Actor*> deadActor;
+	for (auto actor : mActors) {
+		if (actor->GetState() == Actor::eState::Dead) {
+			deadActor.emplace_back(actor);
+		}
+	}
+
+	for (auto actor : deadActor) {
+		delete actor;
+	}
 
 }
 
@@ -194,7 +216,6 @@ void Game::GenerateOutput() {
 	for (auto sprite : mSprites) {
 		sprite->Draw(mRenderer);
 	}
-
 	SDL_RenderPresent(mRenderer);
 
 }

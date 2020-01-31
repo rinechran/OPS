@@ -1,7 +1,9 @@
 #include "Grid.h"
+#include "Tower.h"
 #include "Tile.h"
 Grid::Grid(Game* game)
 	: Actor(game)
+	, mSelectedTile(nullptr)
 {
 	mTiles.resize(NUM_ROWS);
 
@@ -48,7 +50,7 @@ Grid::Grid(Game* game)
 
 	mNextEnemy = EnemyTime;
 
-}
+}	
 
 void Grid::ProcessClick(int x, int y)
 {
@@ -59,6 +61,7 @@ void Grid::ProcessClick(int x, int y)
 
 		if (x >= 0 && x < static_cast<int>(NUM_COLS) && y >= 0 && y < static_cast<int>(NUM_ROWS))
 		{
+			SelectTile(y, x);
 		}
 
 	}
@@ -66,15 +69,56 @@ void Grid::ProcessClick(int x, int y)
 
 void Grid::BuildTower()
 {
+	if (mSelectedTile && !mSelectedTile->mBlocked) {
+		mSelectedTile->mBlocked = true;
+
+		if (FindPath(GetEndTile(), GetStartTile()))
+		{
+			Tower* t = new Tower(GetGame());
+			t->SetPosition(mSelectedTile->GetPosition());
+		}
+		else
+		{
+			mSelectedTile->mBlocked = false;
+			FindPath(GetEndTile(), GetStartTile());
+		}
+		UpdatePathTiles(GetStartTile());
+	}
 }
 
 bool Grid::FindPath(Tile* start, Tile* end)
 {
-	return false;
+	for (size_t i = 0; i < NUM_ROWS; i++)
+	{
+		for (size_t j = 0; j < NUM_COLS; j++)
+		{
+			mTiles[i][j]->g = 0.0f;
+			mTiles[i][j]->mInOpenSet = false;
+			mTiles[i][j]->mInClosedSet = false;
+		}
+	}
+	std::vector<Tile*> openSet;
+
+	Tile* current = start;
+	current->mInClosedSet = true;
+	return true;
 }
 
 void Grid::UpdatePathTiles(Tile* start)
 {
+}
+
+void Grid::SelectTile(size_t row, size_t col)
+{
+	Tile::eTileState tileStatus = mTiles[row][col]->GetTileState();
+	if (tileStatus != Tile::eTileState::Start && tileStatus != Tile::eTileState::Base) {
+		if (mSelectedTile!=nullptr) {
+			mSelectedTile->ToggleSelect();
+		}
+		mSelectedTile = mTiles[row][col];
+		mSelectedTile->ToggleSelect();
+
+	}
 }
 
 Tile* Grid::GetStartTile()

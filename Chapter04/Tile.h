@@ -19,12 +19,15 @@ public:
 	Tile::eTileState GetTileState();
 	void SetTileState(eTileState state);
 	void UpdateTexture();
+	void ToggleSelect();
 private:
 	float f;
 	float g;
 	float h;
 
-
+	bool mInOpenSet;
+	bool mInClosedSet;
+	bool mBlocked;
 	std::vector<Tile*> mAdjacent;
 
 

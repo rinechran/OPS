@@ -21,11 +21,11 @@ void Actor::Update(float deltaTime)
 {
 	if (mState == eState::Active) {
 		UpdateComponents(deltaTime);
-		updateActor(deltaTime);
+		UpdateActor(deltaTime);
 	}
 }
 
-void Actor::updateActor(float deltaTime)
+void Actor::UpdateActor(float deltaTime)
 {
 }
 

@@ -14,7 +14,7 @@ public:
 
 	bool FindPath(Tile* start, Tile* end);
 	void UpdatePathTiles(Tile* start);
-
+	void SelectTile(size_t row, size_t col);
 	std::vector<std::vector<Tile*>> mTiles;
 
 	Tile* GetStartTile();
@@ -23,6 +23,10 @@ public:
 private:
 	float mNextEnemy;
 	float EnemyTime;
+
+	Tile* mSelectedTile;
+
+
 
 	const size_t NUM_ROWS = 7;
 	const size_t NUM_COLS = 16;
