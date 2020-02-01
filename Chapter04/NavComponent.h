@@ -8,9 +8,9 @@ class NavComponent : public MoveComponent
 {
 public:
 	NavComponent(Actor* owner, int updateOrder = 10);
-	void Update(float daltaTime) override;
+	void Update(float deltaTime) override;
 	void StartPath(Tile* start);
-	void TrunTo(const Vector2& pos);
+	void TurnTo(const Vector2& pos);
 
 private:
 

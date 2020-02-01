@@ -62,3 +62,5 @@ void Tile::ToggleSelect()
 	UpdateTexture();
 
 }
+
+const Tile* Tile::GetParent() const { return mParent; }

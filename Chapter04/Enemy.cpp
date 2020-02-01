@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Grid.h"
 #include "Tile.h"
+#include "NavComponent.h"
 
 Enemy::Enemy(Game* game)
 	: Actor(game)
@@ -14,6 +15,10 @@ Enemy::Enemy(Game* game)
 	SpriteComponent* sc = new SpriteComponent(this);
 	sc->SetTexture(game->GetTexture("Assets/Airplane.png"));
 	SetPosition(GetGame()->GetGrid()->GetStartTile()->GetPosition());
+
+	NavComponent* nc = new NavComponent(this);
+	nc->SetForwardSpeed(150.f);
+	nc->StartPath(GetGame()->GetGrid()->GetStartTile());
 
 
 }

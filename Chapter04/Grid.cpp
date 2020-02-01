@@ -48,7 +48,7 @@ Grid::Grid(Game* game)
 	FindPath(GetEndTile(), GetStartTile());
 	UpdatePathTiles(GetStartTile());
 
-	mNextEnemy = EnemyTime;
+	mNextEnemy = ENEMY_TIME;
 
 }
 
@@ -193,10 +193,10 @@ void Grid::UpdateActor(float deltaTime)
 
 	mNextEnemy -= deltaTime;
 
-	if (mNextEnemy <= 0.0f)
+	if (mNextEnemy <= 0.5f)
 	{
 		new Enemy(GetGame());
-		mNextEnemy += EnemyTime;
+		mNextEnemy = ENEMY_TIME;
 	}
 
 }
@@ -210,3 +210,4 @@ Tile* Grid::GetEndTile()
 {
 	return mTiles[3][15];
 }
+	

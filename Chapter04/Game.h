@@ -54,7 +54,6 @@ private:
 
 	Grid* mGrid;
 
-	const float EnemyTime = 1.5f;
 
 
 };

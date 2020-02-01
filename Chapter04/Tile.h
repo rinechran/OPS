@@ -20,6 +20,8 @@ public:
 	void SetTileState(eTileState state);
 	void UpdateTexture();
 	void ToggleSelect();
+	const Tile* GetParent() const;
+
 private:
 	float f;
 	float g;
