@@ -86,6 +86,7 @@ void Grid::BuildTower()
 	}
 }
 
+// A* algorithm
 bool Grid::FindPath(Tile* start, Tile* end)
 {
 	for (size_t i = 0; i < NUM_ROWS; i++)
@@ -101,6 +102,20 @@ bool Grid::FindPath(Tile* start, Tile* end)
 
 	Tile* current = start;
 	current->mInClosedSet = true;
+
+	do {
+		for (Tile* neighbor : current->mAdjacent) {
+			if (neighbor->mBlocked) {
+				continue;
+			}
+			if (!neighbor->mInOpenSet) {
+
+			}
+
+		}
+	} while (current != end);
+
+	
 	return true;
 }
 
