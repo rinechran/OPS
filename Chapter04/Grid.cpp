@@ -45,8 +45,7 @@ Grid::Grid(Game* game)
 			}
 		}
 	}
-	FindPath(GetStartTile(), GetEndTile());
-	//FindPath(GetEndTile(), GetStartTile());
+	FindPath(GetEndTile(), GetStartTile());
 	UpdatePathTiles(GetStartTile());
 
 	mNextEnemy = EnemyTime;
@@ -156,6 +155,23 @@ bool Grid::FindPath(Tile* start, Tile* end)
 
 void Grid::UpdatePathTiles(Tile* start)
 {
+	// SET DEFAULT NORMAL
+	for (size_t i = 0; i < NUM_ROWS; ++i) {
+		for (size_t j = 0; j < NUM_COLS; ++j) {
+			if (!(i == 3 && j == 0) && !(i == 3 && j == 15))
+			{
+				mTiles[i][j]->SetTileState(Tile::eTileState::Default);
+			}
+		}
+	}
+
+	// SET TILE STATUS
+	Tile* t = start->mParent;
+	while (t != nullptr)
+	{
+		t->SetTileState(Tile::eTileState::Path);
+		t = t->mParent;
+	}
 }
 
 void Grid::SelectTile(size_t row, size_t col)
