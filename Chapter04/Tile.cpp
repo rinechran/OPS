@@ -8,6 +8,7 @@ Tile::Tile(Game* game)
 	, h(0.0f)
 	, mSprite(nullptr)
 	, mSelected(false)
+	, mBlocked(false)
 {
 
 	mSprite = new SpriteComponent(this);

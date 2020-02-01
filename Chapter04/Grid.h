@@ -16,7 +16,7 @@ public:
 	void UpdatePathTiles(Tile* start);
 	void SelectTile(size_t row, size_t col);
 	std::vector<std::vector<Tile*>> mTiles;
-
+	void UpdateActor(float deltaTime) override;
 	Tile* GetStartTile();
 	Tile* GetEndTile();
 

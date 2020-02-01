@@ -1,6 +1,8 @@
+#include <algorithm>
 #include "Grid.h"
 #include "Tower.h"
 #include "Tile.h"
+#include "Enemy.h"
 Grid::Grid(Game* game)
 	: Actor(game)
 	, mSelectedTile(nullptr)
@@ -28,29 +30,28 @@ Grid::Grid(Game* game)
 
 	// adjacent List Setup
 	for (size_t i = 0; i < NUM_ROWS; ++i) {
-		for (size_t j = 0; j < NUM_ROWS; ++j) {
+		for (size_t j = 0; j < NUM_COLS; ++j) {
 			if (i > 0) {
 				mTiles[i][j]->mAdjacent.push_back(mTiles[i - 1][j]);
 			}
 			if (i < NUM_ROWS - 1) {
 				mTiles[i][j]->mAdjacent.push_back(mTiles[i + 1][j]);
 			}
-			if (j < 0) {
+			if (j > 0) {
 				mTiles[i][j]->mAdjacent.push_back(mTiles[i][j - 1]);
 			}
-			if (j < NUM_COLS) {
+			if (j < NUM_COLS - 1 ) {
 				mTiles[i][j]->mAdjacent.push_back(mTiles[i][j + 1]);
 			}
 		}
 	}
-
 	FindPath(GetStartTile(), GetEndTile());
+	//FindPath(GetEndTile(), GetStartTile());
 	UpdatePathTiles(GetStartTile());
-
 
 	mNextEnemy = EnemyTime;
 
-}	
+}
 
 void Grid::ProcessClick(int x, int y)
 {
@@ -86,7 +87,9 @@ void Grid::BuildTower()
 	}
 }
 
-// A* algorithm
+/**
+	A* algorithm f(x) =
+*/
 bool Grid::FindPath(Tile* start, Tile* end)
 {
 	for (size_t i = 0; i < NUM_ROWS; i++)
@@ -108,15 +111,47 @@ bool Grid::FindPath(Tile* start, Tile* end)
 			if (neighbor->mBlocked) {
 				continue;
 			}
-			if (!neighbor->mInOpenSet) {
+
+			if (!neighbor->mInClosedSet) {
+
+				if (!neighbor->mInOpenSet) {
+					neighbor->mParent = current;
+					neighbor->h = (neighbor->GetPosition() - end->GetPosition()).Length();
+					neighbor->g = current->g + TILE_SIZE;
+					neighbor->f = neighbor->g + neighbor->h;
+					openSet.emplace_back(neighbor);
+					neighbor->mInOpenSet = true;
+				}
+				else {
+					float newG = current->g + TILE_SIZE;
+					if (newG < neighbor->g) {
+						neighbor->mParent = current;
+						neighbor->g = newG;
+						neighbor->f = neighbor->g + neighbor->h;
+					}
+				}
 
 			}
-
 		}
+
+		if (openSet.empty()) {
+			break;
+		}
+		auto iter = std::min_element(openSet.begin(), openSet.end(),
+			[](Tile* a, Tile* b) {
+				return a->f < b->f;
+			});
+
+		current = *iter;
+		openSet.erase(iter);
+		current->mInOpenSet = false;
+		current->mInClosedSet = true;
+
 	} while (current != end);
 
-	
-	return true;
+
+
+	return (current == end) ? true : false;
 }
 
 void Grid::UpdatePathTiles(Tile* start)
@@ -127,13 +162,27 @@ void Grid::SelectTile(size_t row, size_t col)
 {
 	Tile::eTileState tileStatus = mTiles[row][col]->GetTileState();
 	if (tileStatus != Tile::eTileState::Start && tileStatus != Tile::eTileState::Base) {
-		if (mSelectedTile!=nullptr) {
+		if (mSelectedTile != nullptr) {
 			mSelectedTile->ToggleSelect();
 		}
 		mSelectedTile = mTiles[row][col];
 		mSelectedTile->ToggleSelect();
 
 	}
+}
+
+void Grid::UpdateActor(float deltaTime)
+{
+	Actor::UpdateActor(deltaTime);
+
+	mNextEnemy -= deltaTime;
+
+	if (mNextEnemy <= 0.0f)
+	{
+		new Enemy(GetGame());
+		mNextEnemy += EnemyTime;
+	}
+
 }
 
 Tile* Grid::GetStartTile()

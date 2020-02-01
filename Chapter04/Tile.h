@@ -24,6 +24,7 @@ private:
 	float f;
 	float g;
 	float h;
+	Tile* mParent;
 
 	bool mInOpenSet;
 	bool mInClosedSet;

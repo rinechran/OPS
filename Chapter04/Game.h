@@ -23,6 +23,7 @@ public:
 
 	void AddSprite(SpriteComponent* sprite);
 	void RemoveSprite(SpriteComponent* sprite);
+	Grid* GetGrid() { return mGrid; }
 
 	SDL_Texture* GetTexture(const std::string& fileName);
 
