@@ -22,7 +22,7 @@ const Vector2& CircleComponent::GetCenter() const
 bool Intersect(const CircleComponent& a, const CircleComponent& b)
 {
 	Vector2 diff = a.GetCenter() - b.GetCenter();
-	float distSq = diff.Length();
+	float distSq = diff.LengthSq();
 
 	float radiiSq = a.GetRadius() + b.GetRadius();
 	radiiSq *= radiiSq;

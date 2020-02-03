@@ -23,8 +23,8 @@ public:
 
 	virtual void ActorInput(const std::uint8_t * keyState);
 
-	const Vector2 GetPosition() const;
-	void SetPosition(const Vector2 pos);
+	const Vector2& GetPosition() const;
+	void SetPosition(const Vector2& pos);
 
 	void AddComponent(Component* component);
 	void RemoveComponent(Component* component);

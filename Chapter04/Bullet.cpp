@@ -8,7 +8,7 @@
 Bullet::Bullet(Game* game)
 	:Actor(game)
 {
-	SpriteComponent* sc = new SpriteComponent(this,300);
+	SpriteComponent* sc = new SpriteComponent(this);
 	sc->SetTexture(game->GetTexture("Assets/Projectile.png"));
 
 	MoveComponent* mc = new MoveComponent(this);
