@@ -1,9 +1,9 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <unordered_map>
 #include "SDL/SDL.h"
-
+#include <unordered_map>
+#include <string>
+#include <vector>
+#include "Math.h"
 
 class Actor;
 class SpriteComponent;
@@ -26,6 +26,7 @@ public:
 	Grid* GetGrid() { return mGrid; }
 
 	SDL_Texture* GetTexture(const std::string& fileName);
+	Enemy* GetNearestEnemy(const Vector2& pos);
 
 	std::vector<Enemy*>& GetEnemies();
 

@@ -3,6 +3,8 @@
 #include "SDL/SDL_image.h"
 #include "Grid.h"
 #include "SpriteComponent.h"
+#include "Bullet.h"
+#include "Enemy.h"
 
 Game::Game()
 	: mIsRunning(true)
@@ -131,6 +133,30 @@ SDL_Texture* Game::GetTexture(const std::string& fileName)
 	}
 	return tex;
 }
+
+Enemy* Game::GetNearestEnemy(const Vector2& pos)
+{
+	Enemy* best = nullptr;
+
+	if (mEnemies.size() > 0)
+	{
+		best = mEnemies[0];
+		// Save the distance squared of first enemy, and test if others are closer
+		float bestDistSq = (pos - mEnemies[0]->GetPosition()).LengthSq();
+		for (size_t i = 1; i < mEnemies.size(); i++)
+		{
+			float newDistSq = (pos - mEnemies[i]->GetPosition()).LengthSq();
+			if (newDistSq < bestDistSq)
+			{
+				bestDistSq = newDistSq;
+				best = mEnemies[i];
+			}
+		}
+	}
+
+	return best;
+}
+
 
 std::vector<Enemy*>& Game::GetEnemies() { return mEnemies; }
 
