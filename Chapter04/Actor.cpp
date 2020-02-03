@@ -15,6 +15,10 @@ Actor::Actor(Game* game)
 Actor::~Actor() {
 
 	mGame->RemoveActor(this);
+	while (!mComponents.empty())
+	{
+		delete mComponents.back();
+	}
 }
 
 void Actor::Update(float deltaTime)
