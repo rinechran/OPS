@@ -52,12 +52,12 @@ void Actor::ActorInput(const std::uint8_t * keyState)
 
 }
 
-const Vector2& Actor::GetPosition() const
+const Vector2 Actor::GetPosition() const
 {
 	return mPosition;
 }
 
-void Actor::SetPosition(const Vector2& pos)
+void Actor::SetPosition(const Vector2 pos)
 {
 	mPosition = pos;
 }

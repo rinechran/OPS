@@ -8,7 +8,7 @@
 Bullet::Bullet(Game* game)
 	:Actor(game)
 {
-	SpriteComponent* sc = new SpriteComponent(this);
+	SpriteComponent* sc = new SpriteComponent(this,300);
 	sc->SetTexture(game->GetTexture("Assets/Projectile.png"));
 
 	MoveComponent* mc = new MoveComponent(this);
@@ -23,6 +23,9 @@ Bullet::Bullet(Game* game)
 
 void Bullet::UpdateActor(float deltaTime)
 {
+
+	Actor::UpdateActor(deltaTime);
+
 	for (Enemy* e : GetGame()->GetEnemies())
 	{
 		if (Intersect(*mCircle, *(e->GetCircle())))
@@ -40,4 +43,5 @@ void Bullet::UpdateActor(float deltaTime)
 		// Time limit hit, die
 		SetState(Actor::eState::Dead);
 	}
+
 }

@@ -20,7 +20,8 @@ Enemy::Enemy(Game* game)
 	nc->SetForwardSpeed(150.f);
 	nc->StartPath(GetGame()->GetGrid()->GetStartTile());
 
-
+	mCircle = new CircleComponent(this);
+	mCircle->SetRadius(25.0f);
 }
 
 Enemy::~Enemy()
