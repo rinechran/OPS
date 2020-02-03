@@ -23,5 +23,21 @@ Bullet::Bullet(Game* game)
 
 void Bullet::UpdateActor(float deltaTime)
 {
+	for (Enemy* e : GetGame()->GetEnemies())
+	{
+		if (Intersect(*mCircle, *(e->GetCircle())))
+		{
+			// We both die on collision
+			e->SetState(Actor::eState::Dead);
+			SetState(Actor::eState::Dead);
+			break;
+		}
+	}
 
+	mLiveTime -= deltaTime;
+	if (mLiveTime <= 0.0f)
+	{
+		// Time limit hit, die
+		SetState(Actor::eState::Dead);
+	}
 }
