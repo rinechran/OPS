@@ -25,10 +25,21 @@ Enemy::Enemy(Game* game)
 
 Enemy::~Enemy()
 {
+	auto iter = std::find(GetGame()->GetEnemies().begin(),
+		GetGame()->GetEnemies().end(),
+		this);
+	GetGame()->GetEnemies().erase(iter);
 }
 
 void Enemy::UpdateActor(float deltaTime)
 {
+	Actor::UpdateActor(deltaTime);
+
+	Vector2 diff = GetPosition() - GetGame()->GetGrid()->GetEndTile()->GetPosition();
+	if (Math::NearZero(diff.Length(), 10.0f))
+	{
+		SetState(Actor::eState::Dead);
+	}
 }
 
 CircleComponent* Enemy::GetCircle() {
