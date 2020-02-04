@@ -1,4 +1,6 @@
 #pragma once
+#include "SDL/SDL.h"
+
 class Game
 {
 public:
@@ -6,14 +8,8 @@ public:
 
 	}
 
-	bool Initialize() {
-
-	}
-	void RunLoop() {
-
-	}
-	void Shutdown() {
-
-	}
+	bool Initialize();
+	void RunLoop();
+	void Shutdown();
 };
 
