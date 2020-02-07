@@ -1,4 +1,12 @@
+#include <GL/glew.h>
 #include "Game.h"
+
+Game::Game()
+	: mWindow(nullptr)
+	, mContext(nullptr)
+	, mIsRunning(true){
+
+}
 
 bool Game::Initialize() {
 
@@ -20,16 +28,57 @@ bool Game::Initialize() {
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
-	
+	mWindow = SDL_CreateWindow("Game Programing in C++", 100, 100, 1024, 768, SDL_WINDOW_OPENGL);
 
+	if (!mWindow) {
+		SDL_Log("Failed to create window : %s", SDL_GetError());
+		return false;
+	}
+	mContext = SDL_GL_CreateContext(mWindow);
+	
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK) {
+		SDL_Log("Failed to initalize GLEW.");
+		return false;
+	}
+
+	if (!LoadShaders()) {
+		SDL_Log("Failed to load shaders");
+		return false;
+	}
+	
+	mTicksCount = SDL_GetTicks();
 
 	return true;
 }
 
 void Game::RunLoop() {
+	while (mIsRunning) {
+		ProcessInput();
+		UpdateGame();
+		GenerateOutput();
+	}
+}
+void Game::ProcessInput() {
 
 }
 
+void Game::UpdateGame() {
+
+}
 void Game::Shutdown() {
+
+}
+
+bool Game::LoadShaders()
+{
+	return true;
+}
+void Game::GenerateOutput() {
+	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+
+	SDL_GL_SwapWindow(mWindow);
 
 }
