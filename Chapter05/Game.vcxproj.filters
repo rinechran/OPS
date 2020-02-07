@@ -16,12 +16,18 @@
     <ClCompile Include="Math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Math.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexArray.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

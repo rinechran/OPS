@@ -2,6 +2,8 @@
 #include <iostream>
 #include "SDL/SDL.h"
 
+
+class VertexArray;
 class Game
 {
 public:
@@ -18,11 +20,13 @@ private:
 	void LoadData();
 	void GenerateOutput();
 
+	void CreateSpriteVerts();
 	SDL_Window* mWindow;
 	SDL_GLContext mContext;
 
 	std::uint32_t mTicksCount;
 
 	bool mIsRunning;
+	VertexArray* mSpriteVerts;
 };
 

@@ -1,16 +1,17 @@
 #include <GL/glew.h>
 #include "Game.h"
+#include "VertexArray.h"
 
 Game::Game()
 	: mWindow(nullptr)
 	, mContext(nullptr)
-	, mIsRunning(true){
+	, mIsRunning(true) {
 
 }
 
 bool Game::Initialize() {
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)!=0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
 		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
 		return false;
 	}
@@ -35,7 +36,7 @@ bool Game::Initialize() {
 		return false;
 	}
 	mContext = SDL_GL_CreateContext(mWindow);
-	
+
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
 		SDL_Log("Failed to initalize GLEW.");
@@ -46,7 +47,7 @@ bool Game::Initialize() {
 		SDL_Log("Failed to load shaders");
 		return false;
 	}
-	
+
 	mTicksCount = SDL_GetTicks();
 
 	return true;
@@ -80,5 +81,23 @@ void Game::GenerateOutput() {
 
 
 	SDL_GL_SwapWindow(mWindow);
+
+}
+
+void Game::CreateSpriteVerts()
+{
+	float vertices[] = {
+		-0.5f,  0.5f, 0.f, 0.f, 0.f, // top left
+		 0.5f,  0.5f, 0.f, 1.f, 0.f, // top right
+		 0.5f, -0.5f, 0.f, 1.f, 1.f, // bottom right
+		-0.5f, -0.5f, 0.f, 0.f, 1.f  // bottom left
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	mSpriteVerts = new VertexArray(vertices, 4, indices, 6);
 
 }
