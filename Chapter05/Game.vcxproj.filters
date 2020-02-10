@@ -19,6 +19,9 @@
     <ClCompile Include="VertexArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -30,5 +33,10 @@
     <ClInclude Include="VertexArray.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Basic.vert" />
+    <None Include="Shaders\Basic.frag" />
   </ItemGroup>
 </Project>
