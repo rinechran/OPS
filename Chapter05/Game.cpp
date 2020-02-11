@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include "Game.h"
 #include "VertexArray.h"
+#include "Shader.h"
 
 Game::Game()
 	: mWindow(nullptr)
@@ -73,6 +74,13 @@ void Game::Shutdown() {
 
 bool Game::LoadShaders()
 {
+	mSpriteShader = new Shader();
+	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
+	{
+		return false;
+	}
+	mSpriteShader->SetActve();
+
 	return true;
 }
 void Game::GenerateOutput() {

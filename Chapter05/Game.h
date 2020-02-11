@@ -2,7 +2,7 @@
 #include <iostream>
 #include "SDL/SDL.h"
 
-
+class Shader;
 class VertexArray;
 class Game
 {
@@ -28,5 +28,6 @@ private:
 
 	bool mIsRunning;
 	VertexArray* mSpriteVerts;
+	Shader* mSpriteShader;
 };
 
