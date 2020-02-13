@@ -7,7 +7,7 @@ class Game;
 class Component;
 class Actor
 {
-	enum class State {
+	enum class eState {
 		Active,
 		Pause,
 		Dead
@@ -27,9 +27,17 @@ class Actor
 	float GetRotation() const { return mRotation; }
 	void SetRotation(float rotation) { mRotation = rotation;  mRecomputeWorldTransform = true; }
 
+	void ComputeWorldTransform();
+
+	Game* GetGame() { return mGame; }
+
+	void RemoveComponent(Component* component);
+	void AddComponent(Component* component);
+
+
 private:
 	// Actor's state
-	State mState;
+	eState mState;
 
 	// Transform
 	Matrix4 mWorldTransform;
@@ -39,6 +47,7 @@ private:
 	bool mRecomputeWorldTransform;
 
 	std::vector<Component*> mComponents;
+
 	Game* mGame;
 };
 

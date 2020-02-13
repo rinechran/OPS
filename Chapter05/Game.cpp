@@ -1,4 +1,6 @@
 #include <GL/glew.h>
+#include <algorithm>
+
 #include "Game.h"
 #include "VertexArray.h"
 #include "Shader.h"
@@ -6,7 +8,8 @@
 Game::Game()
 	: mWindow(nullptr)
 	, mContext(nullptr)
-	, mIsRunning(true) {
+	, mIsRunning(true)
+	, mUpdatingActors(false){
 
 }
 
@@ -72,6 +75,34 @@ void Game::Shutdown() {
 
 }
 
+void Game::AddActor(Actor* actor)
+{
+	if (mUpdatingActors) {
+		mPendingActors.emplace_back(actor);
+	}
+	else
+	{
+		mActors.emplace_back(actor);
+	}
+}
+
+
+void Game::RemoveActor(Actor* actor)
+{
+	auto iter = std::find(mPendingActors.begin(), mPendingActors.end(), actor);
+	if (iter != mPendingActors.end()) {
+		std::iter_swap(iter, mPendingActors.end() - 1);
+		mPendingActors.pop_back();
+	}
+
+	iter = std::find(mActors.begin(), mActors.end(), actor);
+	if (iter != mActors.end())
+	{
+		std::iter_swap(iter, mActors.end() - 1);
+		mActors.pop_back();
+	}
+}
+
 bool Game::LoadShaders()
 {
 	mSpriteShader = new Shader();
@@ -82,6 +113,9 @@ bool Game::LoadShaders()
 	mSpriteShader->SetActve();
 
 	return true;
+}
+void Game::LoadData()
+{
 }
 void Game::GenerateOutput() {
 	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);

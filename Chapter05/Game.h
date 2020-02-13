@@ -1,8 +1,10 @@
 #pragma once
 #include <iostream>
+#include <vector>
 #include "SDL/SDL.h"
 
 class Shader;
+class Actor;
 class VertexArray;
 class Game
 {
@@ -13,6 +15,9 @@ public:
 	void RunLoop();
 	void Shutdown();
 
+	void AddActor(Actor* actor);
+	void RemoveActor(class Actor* actor);
+
 private:
 	void UpdateGame();
 	void ProcessInput();
@@ -21,6 +26,8 @@ private:
 	void GenerateOutput();
 
 	void CreateSpriteVerts();
+
+private:
 	SDL_Window* mWindow;
 	SDL_GLContext mContext;
 
@@ -29,5 +36,12 @@ private:
 	bool mIsRunning;
 	VertexArray* mSpriteVerts;
 	Shader* mSpriteShader;
+
+	std::vector<Actor*> mActors;
+	std::vector<Actor*> mPendingActors;
+
+	bool mUpdatingActors;
+
+
 };
 
