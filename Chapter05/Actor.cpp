@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Math.h"
 #include "Component.h"
-#include "a"
+
 Actor::Actor(Game* game)
 	: mGame(game)
 	, mState(Actor::eState::Active)
@@ -55,6 +55,18 @@ void Actor::ProcessInput(const std::uint8_t* keyState)
 
 void Actor::ComputeWorldTransform()
 {
+	if (mRecomputeWorldTransform) {
+		mRecomputeWorldTransform = false;
+		// S R T 
+		mWorldTransform = Matrix4::CreateScale(mScale);
+		mWorldTransform *= Matrix4::CreateRotationZ(mRotation);
+		mWorldTransform *= Matrix4::CreateTranslation(Vector3(mPosition.x, mPosition.y, 0.0f));
+
+		for (auto comp : mComponents)
+		{
+			comp->OnUpdateWorldTransform();
+		}
+	}
 }
 
 void Actor::RemoveComponent(Component* component)
@@ -67,4 +79,16 @@ void Actor::RemoveComponent(Component* component)
 
 void Actor::AddComponent(Component* component)
 {
+	int myOrder = component->GetUpdateOrder();
+	auto iter = mComponents.begin();
+	for (;
+		iter != mComponents.end();
+		++iter) {
+
+		if (myOrder < (*iter)->GetUpdateOrder) {
+			break;
+		}
+	}
+	mComponents.insert(iter, component);
+
 }
