@@ -93,7 +93,7 @@ void Actor::AddComponent(Component* component)
 		iter != mComponents.end();
 		++iter) {
 
-		if (myOrder < (*iter)->GetUpdateOrder) {
+		if (myOrder < (*iter)->GetUpdateOrder()) {
 			break;
 		}
 	}

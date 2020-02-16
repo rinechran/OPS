@@ -111,6 +111,8 @@ bool Game::LoadShaders()
 		return false;
 	}
 	mSpriteShader->SetActve();
+	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(1024.f, 768.f);
+	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 
 	return true;
 }
