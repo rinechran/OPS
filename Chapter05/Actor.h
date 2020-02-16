@@ -18,6 +18,7 @@ class Actor
 	void Update(float deltaTime);
 	void UpdateComponents(float deltaTime);
 	virtual void UpdateActor(float deltaTime);
+	virtual void ActorInput(const uint8_t* keyState);
 	void ProcessInput(const uint8_t* keyState);
 
 	const Vector2& GetPosition() const { return mPosition; }
