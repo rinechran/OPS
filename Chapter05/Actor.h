@@ -7,6 +7,7 @@ class Game;
 class Component;
 class Actor
 {
+public:
 	enum class eState {
 		Active,
 		Pause,
@@ -34,6 +35,13 @@ class Actor
 
 	void RemoveComponent(Component* component);
 	void AddComponent(Component* component);
+
+	Actor::eState GetState() {
+		return mState;
+	}
+	void SetState(eState state) {
+		mState = state;
+	}
 
 
 private:

@@ -1,10 +1,11 @@
 #include <GL/glew.h>
 #include <algorithm>
-
 #include "Game.h"
 #include "VertexArray.h"
 #include "Shader.h"
-
+#include "Actor.h"
+#include "Ship.h"
+#include "Texture.h"
 Game::Game()
 	: mWindow(nullptr)
 	, mContext(nullptr)
@@ -52,6 +53,8 @@ bool Game::Initialize() {
 		return false;
 	}
 
+	LoadData();
+
 	mTicksCount = SDL_GetTicks();
 
 	return true;
@@ -66,9 +69,67 @@ void Game::RunLoop() {
 }
 void Game::ProcessInput() {
 
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_QUIT:
+			mIsRunning = false;
+		}
+	}
+	
+	const std::uint8_t* keyState = SDL_GetKeyboardState(nullptr);
+	if (keyState[SDL_SCANCODE_ESCAPE]) {
+		mIsRunning = false;
+	}
+
+	mUpdatingActors = true;
+	for (auto actor : mActors)
+	{
+		actor->ProcessInput(keyState);
+	}
+	mUpdatingActors = false;
 }
 
 void Game::UpdateGame() {
+	while (mTicksCount + 16 - SDL_GetTicks() <=0 ) {
+		continue;
+	}
+	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
+	if (deltaTime > 0.05f)
+	{
+		deltaTime = 0.05f;
+	}
+
+
+	mUpdatingActors = true;
+	for (auto actor : mActors) {
+		actor->Update(deltaTime);
+	}
+	mUpdatingActors = false;
+
+	for (auto pending : mPendingActors)
+	{
+		pending->ComputeWorldTransform();
+		mActors.emplace_back(pending);
+	}
+	mPendingActors.clear();
+
+	std::vector<Actor*> deadActors;
+	for (auto actor : mActors)
+	{
+		if (actor->GetState() == Actor::eState::Dead)
+		{
+			deadActors.emplace_back(actor);
+		}
+	}
+
+	for (auto actor : deadActors)
+	{
+		delete actor;
+	}
+
+	mTicksCount = SDL_GetTicks();
+
 
 }
 void Game::Shutdown() {
@@ -103,6 +164,26 @@ void Game::RemoveActor(Actor* actor)
 	}
 }
 
+Texture* Game::GetTexture(std::string& fileName)
+{
+	Texture* tex = nullptr;
+	auto iter = mTextures.find(fileName);
+	if (iter != mTextures.end()) {
+		tex = iter->second;
+	}
+	else {
+		tex = new Texture();
+		if (tex->Load(fileName)) {
+			mTextures.emplace(fileName, tex);
+		}
+		else {
+			delete tex;
+			tex = nullptr;
+		}
+	}
+	return tex;
+}
+
 bool Game::LoadShaders()
 {
 	mSpriteShader = new Shader();
@@ -118,6 +199,10 @@ bool Game::LoadShaders()
 }
 void Game::LoadData()
 {
+	mShip = new Ship(this);
+	mShip->SetRotation(Math::PiOver2);
+
+
 }
 void Game::GenerateOutput() {
 	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);

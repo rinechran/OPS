@@ -34,6 +34,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Ship.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -50,6 +53,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Ship.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Sprite.frag" />

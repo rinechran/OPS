@@ -79,15 +79,15 @@ bool Shader::CompileShader(const std::string& fileName, GLenum shaderType, GLuin
 bool Shader::IsCompiled(GLuint shader)
 {
 	GLint status;
-	glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &status);
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE) {
 		char buffer[512];
 		memset(buffer, 0, 512);
-		glGetProgramInfoLog(mShaderProgram, 511, nullptr, buffer);
+		glGetProgramInfoLog(shader, 511, nullptr, buffer);
 		SDL_Log("GLSL Link status : %s", buffer);
 		return false;
 	}
-	return true;;
+	return true;
 }
 
 bool Shader::IsValidProgram()

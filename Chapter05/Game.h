@@ -1,11 +1,15 @@
 #pragma once
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 #include "SDL/SDL.h"
 
 class Shader;
 class Actor;
 class VertexArray;
+class SpriteComponent;
+class Ship;
+class Texture;
 class Game
 {
 public:
@@ -18,6 +22,7 @@ public:
 	void AddActor(Actor* actor);
 	void RemoveActor(class Actor* actor);
 
+	Texture* GetTexture(std::string& fileName);
 private:
 	void UpdateGame();
 	void ProcessInput();
@@ -39,8 +44,15 @@ private:
 
 	std::vector<Actor*> mActors;
 	std::vector<Actor*> mPendingActors;
+	std::vector<SpriteComponent*> mSprites;
+	
+	std::unordered_map<std::string, Texture*> mTextures;
+
 
 	bool mUpdatingActors;
+
+
+	Ship* mShip;
 
 
 };

@@ -57,7 +57,6 @@ void Actor::ProcessInput(const std::uint8_t* keyState)
 			comp->ProcessInput(keyState);
 		};
 		ActorInput(keyState);
-		
 	}
 }
 
