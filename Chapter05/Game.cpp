@@ -6,6 +6,7 @@
 #include "Actor.h"
 #include "Ship.h"
 #include "Texture.h"
+#include "SpriteComponent.h"
 Game::Game()
 	: mWindow(nullptr)
 	, mContext(nullptr)
@@ -164,7 +165,32 @@ void Game::RemoveActor(Actor* actor)
 	}
 }
 
-Texture* Game::GetTexture(std::string& fileName)
+
+void Game::AddSprite(SpriteComponent* sprite)
+{
+	int myDrawOrder = sprite->GetDrawOrder();
+	auto iter = mSprites.begin();
+	for (;
+		iter != mSprites.end();
+		++iter)
+	{
+		if (myDrawOrder < (*iter)->GetDrawOrder())
+		{
+			break;
+		}
+	}
+
+	mSprites.insert(iter, sprite);
+}
+
+void Game::RemoveSprite(SpriteComponent* sprite)
+{
+	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
+	mSprites.erase(iter);
+}
+
+
+Texture* Game::GetTexture(const std::string& fileName)
 {
 	Texture* tex = nullptr;
 	auto iter = mTextures.find(fileName);
@@ -207,7 +233,16 @@ void Game::LoadData()
 void Game::GenerateOutput() {
 	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
+	mSpriteShader->SetActve();
+	mSpriteVerts->SetActive();
+	for (auto sprite : mSprites)
+	{
+		sprite->Draw(mSpriteShader);
+	}
 
 	SDL_GL_SwapWindow(mWindow);
 

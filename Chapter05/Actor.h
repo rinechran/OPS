@@ -36,6 +36,8 @@ public:
 	void RemoveComponent(Component* component);
 	void AddComponent(Component* component);
 
+
+
 	Actor::eState GetState() {
 		return mState;
 	}

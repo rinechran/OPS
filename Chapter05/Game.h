@@ -21,8 +21,9 @@ public:
 
 	void AddActor(Actor* actor);
 	void RemoveActor(class Actor* actor);
-
-	Texture* GetTexture(std::string& fileName);
+	void AddSprite( SpriteComponent* sprite);
+	void RemoveSprite( SpriteComponent* sprite);
+	Texture* GetTexture(const std::string& fileName);
 private:
 	void UpdateGame();
 	void ProcessInput();

@@ -11,7 +11,7 @@ public:
 	virtual void ProcessInput(const std::uint8_t * keyState);
 	virtual void OnUpdateWorldTransform() { }
 	int GetUpdateOrder() const { return mUpdateOrder; }
-private:
+protected:
 	Actor* mOwner;
 	int mUpdateOrder;
 };

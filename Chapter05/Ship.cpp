@@ -1,14 +1,14 @@
 #include "Ship.h"
 #include "Game.h"
 #include "SpriteComponent.h"
-
-Ship::Ship(Game* mGame)
-	: Actor(mGame)
+#include "Texture.h"
+Ship::Ship(Game* game)
+	: Actor(game)
 	, mLaserCooldown(0.0f)
 {
 	SpriteComponent* sc = new SpriteComponent(this, 150);
-	sc->SetTexture()
-	
+	sc->SetTexture(game->GetTexture("Assets/Ship.png"));
+
 }
 
 void Ship::UpdateActor(float deltaTime)

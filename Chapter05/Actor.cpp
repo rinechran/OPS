@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Math.h"
 #include "Component.h"
+#include "SpriteComponent.h"
 
 Actor::Actor(Game* game)
 	: mGame(game)
