@@ -17,13 +17,16 @@ Texture::~Texture()
 bool Texture::Load(const std::string& fileName)
 {
 	int channels = 0;
+
 	unsigned char* image = SOIL_load_image(fileName.c_str(),
 		&mWidth, &mHeight, &channels, SOIL_LOAD_AUTO);
 
-	if (image == nullptr) {
-		SDL_Log("SOIL Failed to load image %s : %s", fileName.c_str(), SOIL_last_result());
+	if (image == nullptr)
+	{
+		SDL_Log("SOIL failed to load image %s: %s", fileName.c_str(), SOIL_last_result());
 		return false;
 	}
+
 	int format = GL_RGB;
 	if (channels == 4)
 	{
@@ -37,6 +40,7 @@ bool Texture::Load(const std::string& fileName)
 		GL_UNSIGNED_BYTE, image);
 
 	SOIL_free_image_data(image);
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

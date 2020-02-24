@@ -28,8 +28,10 @@ public:
 	void SetScale(float scale) { mScale = scale;  mRecomputeWorldTransform = true; }
 	float GetRotation() const { return mRotation; }
 	void SetRotation(float rotation) { mRotation = rotation;  mRecomputeWorldTransform = true; }
+	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), Math::Sin(mRotation)); }
 
 	void ComputeWorldTransform();
+	const Matrix4& GetWorldTransform() const { return mWorldTransform; }
 
 	Game* GetGame() { return mGame; }
 

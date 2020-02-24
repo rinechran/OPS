@@ -37,6 +37,12 @@
     <ClCompile Include="Ship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InputComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -54,6 +60,8 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Ship.h" />
+    <ClInclude Include="InputComponent.h" />
+    <ClInclude Include="MoveComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Sprite.frag" />

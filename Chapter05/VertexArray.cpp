@@ -14,3 +14,11 @@ VertexArray::~VertexArray()
 void VertexArray::SetActive()
 {
 }
+
+unsigned int VertexArray::GetNumIndeces() const {
+	return mNumIndices;
+}
+
+unsigned int VertexArray::getNumVerts() const {
+	return mNumVerts;
+}
