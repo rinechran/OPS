@@ -52,6 +52,9 @@
     <ClCompile Include="Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -72,6 +75,7 @@
     <ClInclude Include="CircleComponent.h" />
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Sprite.frag" />

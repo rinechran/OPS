@@ -6,6 +6,7 @@
 #include "Ship.h"
 #include "Texture.h"
 #include "SpriteComponent.h"
+#include "VertexArray.h"
 Game::Game()
 	: mWindow(nullptr)
 	, mContext(nullptr)
@@ -52,6 +53,7 @@ bool Game::Initialize() {
 		SDL_Log("Failed to load shaders");
 		return false;
 	}
+	CreateSpriteVerts();
 
 	LoadData();
 
@@ -223,6 +225,23 @@ void Game::RemoveAsteroid(Asteroid* ast)
 	{
 		mAsteroids.erase(iter);
 	}
+}
+
+void Game::CreateSpriteVerts()
+{
+	float vertices[] = {
+	-0.5f,  0.5f, 0.f, 0.f, 0.f, // top left
+	 0.5f,  0.5f, 0.f, 1.f, 0.f, // top right
+	 0.5f, -0.5f, 0.f, 1.f, 1.f, // bottom right
+	-0.5f, -0.5f, 0.f, 0.f, 1.f  // bottom left
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	mSpriteVerts = new VertexArray(vertices, 4, indices, 6);
 }
 
 bool Game::LoadShaders()

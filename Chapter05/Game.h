@@ -29,6 +29,7 @@ public:
 	std::vector<Asteroid*>& GetAsteroids() { return mAsteroids; }
 	void AddAsteroid(Asteroid* ast);
 	void RemoveAsteroid(Asteroid* ast);
+	void CreateSpriteVerts();
 
 
 private:
