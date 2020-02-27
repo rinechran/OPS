@@ -115,6 +115,7 @@ void Game::UpdateGame() {
 		mActors.emplace_back(pending);
 	}
 	mPendingActors.clear();
+	mTicksCount = SDL_GetTicks();
 
 	std::vector<Actor*> deadActors;
 	for (auto actor : mActors)
@@ -130,7 +131,6 @@ void Game::UpdateGame() {
 		delete actor;
 	}
 
-	mTicksCount = SDL_GetTicks();
 
 
 }
@@ -276,6 +276,7 @@ void Game::GenerateOutput() {
 
 
 	mSpriteShader->SetActve();
+	mSpriteVerts->SetActive();
 
 	for (auto sprite : mSprites)
 	{
