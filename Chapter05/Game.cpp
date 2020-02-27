@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include <algorithm>
 #include "Game.h"
-#include "VertexArray.h"
 #include "Shader.h"
 #include "Actor.h"
 #include "Ship.h"
@@ -210,6 +209,22 @@ Texture* Game::GetTexture(const std::string& fileName)
 	return tex;
 }
 
+void Game::AddAsteroid(Asteroid* ast)
+{
+	mAsteroids.emplace_back(ast);
+
+}
+
+void Game::RemoveAsteroid(Asteroid* ast)
+{
+	auto iter = std::find(mAsteroids.begin(),
+		mAsteroids.end(), ast);
+	if (iter != mAsteroids.end())
+	{
+		mAsteroids.erase(iter);
+	}
+}
+
 bool Game::LoadShaders()
 {
 	mSpriteShader = new Shader();
@@ -228,7 +243,11 @@ void Game::LoadData()
 	mShip = new Ship(this);
 	mShip->SetRotation(Math::PiOver2);
 
-
+	const int numAsteroids = 20;
+	for (int i = 0; i < numAsteroids; i++)
+	{
+		new Asteroid(this);
+	}
 }
 void Game::GenerateOutput() {
 	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
@@ -238,7 +257,7 @@ void Game::GenerateOutput() {
 
 
 	mSpriteShader->SetActve();
-	mSpriteVerts->SetActive();
+
 	for (auto sprite : mSprites)
 	{
 		sprite->Draw(mSpriteShader);

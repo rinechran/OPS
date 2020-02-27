@@ -1,17 +1,27 @@
+// ----------------------------------------------------------------
+// From Game Programming in C++ by Sanjay Madhav
+// Copyright (C) 2017 Sanjay Madhav. All rights reserved.
+// 
+// Released under the BSD License
+// See LICENSE in root directory for full details.
+// ----------------------------------------------------------------
+
+#include "Texture.h"
 #include <SOIL/SOIL.h>
 #include <GL/glew.h>
 #include <SDL/SDL.h>
-#include "Texture.h"
 
 Texture::Texture()
 	:mTextureID(0)
 	, mWidth(0)
 	, mHeight(0)
 {
+
 }
 
 Texture::~Texture()
 {
+
 }
 
 bool Texture::Load(const std::string& fileName)
@@ -44,18 +54,11 @@ bool Texture::Load(const std::string& fileName)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-
 	return true;
 }
 
-void Texture::UnLoad()
-{
-	glDeleteTextures(1, &mTextureID);
-
-}
 
 void Texture::SetActive()
 {
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
-
 }

@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <vector>
 #include "SDL/SDL.h"
+#include "Asteroid.h"
 
 class Shader;
 class Actor;
@@ -10,6 +11,7 @@ class VertexArray;
 class SpriteComponent;
 class Ship;
 class Texture;
+class mAsteroids;
 class Game
 {
 public:
@@ -24,6 +26,11 @@ public:
 	void AddSprite( SpriteComponent* sprite);
 	void RemoveSprite( SpriteComponent* sprite);
 	Texture* GetTexture(const std::string& fileName);
+	std::vector<Asteroid*>& GetAsteroids() { return mAsteroids; }
+	void AddAsteroid(Asteroid* ast);
+	void RemoveAsteroid(Asteroid* ast);
+
+
 private:
 	void UpdateGame();
 	void ProcessInput();
@@ -31,7 +38,6 @@ private:
 	void LoadData();
 	void GenerateOutput();
 
-	void CreateSpriteVerts();
 
 private:
 	SDL_Window* mWindow;
@@ -49,6 +55,7 @@ private:
 	
 	std::unordered_map<std::string, Texture*> mTextures;
 
+	std::vector<Asteroid*> mAsteroids;
 
 	bool mUpdatingActors;
 
